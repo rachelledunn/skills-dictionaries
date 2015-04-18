@@ -1,5 +1,5 @@
 # To work on the advanced problems, set to True
-ADVANCED = False
+ADVANCED = True
 
 
 def count_unique(string1):
@@ -30,14 +30,10 @@ def count_unique(string1):
     """
     uniquedict = {}
 
-    string1 = string1.split()
-
-    for word in string1:
+    for word in string1.split():
         uniquedict[word] = uniquedict.setdefault(word, 0) + 1
 
     return uniquedict
-
-print count_unique("each word weird word word appears once")
 
 
 def common_items(list1, list2):
@@ -67,7 +63,13 @@ def common_items(list1, list2):
 
     """
 
-    pass
+    common = []
+    for i1 in list1:
+        for i2 in list2:
+            if i1 == i2:
+                common.append(i1)
+
+    return common
 
 
 def unique_common_items(list1, list2):
@@ -92,22 +94,14 @@ def unique_common_items(list1, list2):
 
     """
 
-    listdict = {}
-    newlist = []
+    common = {}
 
-    for i in list1:
-        listdict[i] = listdict.setdefault(i, 0) + 1
+    for i1 in list1:
+        for i2 in list2:
+            if i1 == i2:
+                common[i1] = i1
 
-    for i in list2:
-        listdict[i] = listdict.setdefault(i, 0) + 1
-
-    for key in listdict:
-        if listdict[key] > 1:
-            newlist.append(key)
-
-    return newlist
-
-print unique_common_items([1, 2, 3, 4], [1, 2, 2, 3, 7, 8, 9])
+    return common
 
 
 def sum_zero(list1):
@@ -134,9 +128,39 @@ def sum_zero(list1):
         >>> sort_pairs( sum_zero([1, 2, 3, -2, -1, 1, 0, 1, 0]) )
         [[-2, 2], [-1, 1], [0, 0]]
 
+
+    NOTE : THIS ONE WAS HARD!
+
     """
 
-    return []
+    sumzero = {}
+
+    for x in list1: # For each item, loop through all other items (line 140)
+        # print "X: ", x
+        for y in list1: 
+            # print "Y :", y
+            if x + y == 0 and (y, x) not in sumzero: # make pairs that equal 0 and check in sumzero
+                sumzero[(x, y)] = 1 # if not in sumzero yet, put in dict, key is list, and set value to 1 (for storing purposes)
+
+    # print "Sum Zero Dict: ", sumzero
+    sumzero_keys = sumzero.keys() # create list of keys only
+
+    return sumzero_keys
+
+
+
+    # sumzero = {}
+
+    # length = range(len(list1) - 1)
+
+    # for i in length:
+    #     if list1[i] + list1[i + 1] == 0:
+    #         pair = (list1[i], list1[i + 1])
+    #         # print pair
+    #         if pair not in sumzero:
+    #             sumzero[(list1[i], list1[i + 1])] = 1
+
+    # return sumzero
 
 
 def find_duplicates(words):
@@ -155,8 +179,13 @@ def find_duplicates(words):
         ['Rose', 'a', 'is', 'rose']
 
     """
+    wordset = set()
+    for word in words:
+        wordset.add(word)
 
-    return []
+    words = list(wordset)
+
+    return words
 
 
 def word_length(words):
@@ -173,7 +202,11 @@ def word_length(words):
 
     """
 
-    return []
+    wordvalues = {}
+    for word in words:
+        wordvalues.setdefault(len(word), []).append(word) # set key to (length, list of words with length)
+
+    return sorted(wordvalues.items()) # return a list of items, sorted by value
 
 
 def pirate_talk(phrase):
@@ -219,7 +252,36 @@ def pirate_talk(phrase):
 
     """
 
-    return ""
+    piratedict = { 'sir' : 'matey',
+                    'hotel' : 'fleabag inn',
+                    'student' : 'swabbie',
+                    'boy' : 'matey',
+                    'madam' : 'proud beauty',
+                    'professor' : 'foul blaggart',
+                    'restaurant' : 'galley',
+                    'your' : 'yer',
+                    'excuse' : 'arr',
+                    'students' : 'swabbies',
+                    'are' : 'be',
+                    'lawyer' : 'foul blaggart',
+                    'the' : 'th\'',
+                    'restroom' : 'head',
+                    'my' : 'me',
+                    'hello' : 'avast',
+                    'is' : 'be',
+                    'man' : 'matey'
+                    }
+
+    newphrase = ''
+    for word in phrase.split():
+        if word in piratedict:
+            newphrase += piratedict[word] + ' '
+        else:
+            newphrase += word + ' '
+
+    newphrase = newphrase.rstrip()
+    return newphrase
+
 
 def adv_word_length_sorted_words(words):
     """Given list of words, return list of ascending [(len, [sorted-words])].
@@ -236,7 +298,14 @@ def adv_word_length_sorted_words(words):
 
     """
 
-    return []
+    wordvalues = {}
+    for word in words:
+        wordvalues.setdefault(len(word), []).append(word) # set key to (length, list of words with length)
+
+    for lists in wordvalues.values():
+        lists.sort()
+
+    return sorted(wordvalues.items()) # return a list of items, sorted by value
 
 
 ##############################################################################
